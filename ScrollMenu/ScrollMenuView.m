@@ -67,6 +67,7 @@
 
 -(IBAction)menuClicked:(id)sender{
     UIButton *button = (UIButton *)sender;
+    [self.scrollView bringSubviewToFront:self.indexView];
     [UIView animateWithDuration:0.5 animations:^{
         self.indexView.frame = CGRectMake(button.frame.origin.x, self.indexView.frame.origin.y, button.frame.size.width, self.indexView.frame.size.height);
     }];
