@@ -13,6 +13,7 @@
 @property(nonatomic,strong) UIScrollView *scrollView;
 @property(nonatomic,strong) NSArray *menuContents;
 @property(nonatomic,strong) UIView *indexView;
+@property(nonatomic,strong) UIButton *lastSelectedButton;
 @end
 
 @implementation ScrollMenuView
@@ -31,19 +32,21 @@
         for (int i = 0; i < titles.count; i++) {
             NSString *title = [titles objectAtIndex:i];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-
             [button setTitle:title forState:UIControlStateNormal];
-            button.backgroundColor = [UIColor redColor];
+          //  button.backgroundColor = [UIColor redColor];
             [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [button setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
             button.tag = i;
             [button addTarget:self action:@selector(menuClicked:) forControlEvents:UIControlEventTouchUpInside];
             UIFont *font = [UIFont fontWithName:@"Helvetica" size:20];
             NSDictionary *attribute = @{NSFontAttributeName: font};
-      
+            [button.titleLabel setFont:font];
+
             CGSize displayTitleSize = [title boundingRectWithSize:CGSizeMake(100, 50) options:NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+            displayTitleSize.width = displayTitleSize.width + 20;
             button.frame = CGRectMake(beginX, 0, displayTitleSize.width, self.frame.size.height);
             beginX = beginX + displayTitleSize.width;
+            
             NSLog(@"size = %@ ",NSStringFromCGRect(button.frame));
             [self.scrollView addSubview:button];
             if (i == 0) {
@@ -70,6 +73,14 @@
     [self.scrollView bringSubviewToFront:self.indexView];
     [UIView animateWithDuration:0.5 animations:^{
         self.indexView.frame = CGRectMake(button.frame.origin.x, self.indexView.frame.origin.y, button.frame.size.width, self.indexView.frame.size.height);
+        UIFont *font = [UIFont fontWithName:@"Helvetica" size:25];
+        [button.titleLabel setFont:font];
+        if(self.lastSelectedButton != nil){
+            self.lastSelectedButton.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:20];
+            
+        }
+        self.lastSelectedButton = button;
+        
     }];
 }
 /*
