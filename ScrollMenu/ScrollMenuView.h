@@ -12,5 +12,6 @@
 
 -(instancetype)initWithFrame:(CGRect)frame titles:(NSArray *)titles;
 
+-(void)setInitSelected:(NSInteger)selectedIndex;
 
 @end

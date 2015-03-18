@@ -20,7 +20,9 @@
     [super viewDidLoad];
     NSArray *array = [NSArray arrayWithObjects:@"one",@"two",@"three",@"four",@"five",@"six",@"seven",@"eight",@"nine",@"ten",@"eleven",@"twelve",@"thirteen", nil];
     ScrollMenuView *menu = [[ScrollMenuView alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, 50) titles:array];
+    [menu setInitSelected:3];
     [self.view addSubview:menu];
+    
     
     // Do any additional setup after loading the view, typically from a nib.
 }

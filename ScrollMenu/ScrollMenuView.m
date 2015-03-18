@@ -14,6 +14,7 @@
 @property(nonatomic,strong) NSArray *menuContents;
 @property(nonatomic,strong) UIView *indexView;
 @property(nonatomic,strong) UIButton *lastSelectedButton;
+@property(nonatomic,strong) NSMutableArray *menuItems;
 @end
 
 @implementation ScrollMenuView
@@ -21,6 +22,7 @@
 -(instancetype)initWithFrame:(CGRect)frame titles:(NSArray *)titles{
     if (self = [super initWithFrame:frame]) {
         self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        self.menuItems = [[NSMutableArray alloc] init];
         self.scrollView.showsHorizontalScrollIndicator = NO;
         [self addSubview:self.scrollView];
         self.scrollView.pagingEnabled = NO;
@@ -32,6 +34,7 @@
         for (int i = 0; i < titles.count; i++) {
             NSString *title = [titles objectAtIndex:i];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [self.menuItems addObject:button];
             [button setTitle:title forState:UIControlStateNormal];
           //  button.backgroundColor = [UIColor redColor];
             [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -68,6 +71,22 @@
     
 }
 
+-(void)setInitSelected:(NSInteger)selectedIndex{
+    
+    UIButton *button = (UIButton *)[self.menuItems objectAtIndex:selectedIndex];
+    [self.scrollView bringSubviewToFront:self.indexView];
+        self.indexView.frame = CGRectMake(button.frame.origin.x, self.indexView.frame.origin.y, button.frame.size.width, self.indexView.frame.size.height);
+        UIFont *font = [UIFont fontWithName:@"Helvetica" size:25];
+        [button.titleLabel setFont:font];
+        if(self.lastSelectedButton != nil){
+            self.lastSelectedButton.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:20];
+            
+        }
+        self.lastSelectedButton = button;
+        
+
+}
+
 -(IBAction)menuClicked:(id)sender{
     UIButton *button = (UIButton *)sender;
     [self.scrollView bringSubviewToFront:self.indexView];
@@ -82,6 +101,9 @@
         self.lastSelectedButton = button;
         
     }];
+    
+    float offsetX = button.frame.origin.x - self.scrollView.frame.size.width;
+    //[self.scrollView setContentOffset:CGPointMake(offsetX, 0) animated:YES];
 }
 /*
 // Only override drawRect: if you perform custom drawing.
